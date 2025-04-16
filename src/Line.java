@@ -1,3 +1,5 @@
+import biuoop.DrawSurface;
+
 /**
  * Line - Line?
  */
@@ -81,6 +83,7 @@ public class Line {
     private boolean intersecting(Point p1, Point p2, Point p3) {
         return (p3.getY() - p1.getY()) * (p2.getX() - p1.getX())
                 > (p2.getY() - p1.getY()) * (p3.getX() - p1.getX());
+        //positive if p3 is to the left of p1->p2 and negative if p3 is to the right
     }
 
     /**
@@ -240,5 +243,15 @@ public class Line {
         this.end.setY(y);
         this.m = (this.start.getY() - this.end.getY()) / (this.start.getX() - this.end.getX());
         this.b = this.start.getY() - (this.m * this.start.getX());
+    }
+
+    /**
+     * drawLine - static function that draws the line on a given surface.
+     * @param line - to draw
+     * @param surface - to draw on
+     */
+    public static void drawLine(Line line, DrawSurface surface) {
+        surface.drawLine((int) line.getStart().getX(), (int)  line.getStart().getY(),
+                (int) line.getEnd().getX(), (int) line.getEnd().getY());
     }
 }

@@ -78,16 +78,66 @@ public class Ball {
      */
     public void moveOneStep() {
         //check edges
-        if ((this.center.getX() + radius) >= this.screenmaxwidth || this.center.getX() < screenminwidth) {
+        //right and left
+        if ((this.center.getX() + radius * 2) >= this.screenmaxwidth || this.center.getX() < screenminwidth) {
             this.v.setDx(-this.v.getDx());
         }
-        if ((this.center.getY() + radius) >= this.screenmaxheight || this.center.getY() < screenminheight) {
+        //up and down
+        if ((this.center.getY() + radius * 2) >= this.screenmaxheight || this.center.getY() < screenminheight) {
             this.v.setDy(-this.v.getDy());
         }
         //apply to point
         this.center = this.getVelocity().applyToPoint(this.center);
     }
 
+    /**
+     * collideRectangle - checks if this ball is colliding with a rectangle and changes its direction accordingly.
+     * @param r - the rectangle to check with
+     * @return - boolean if they collided or not
+     */
+    public boolean collideRectangle(Rectangle r) {
+        // circle center correction because of the drawing of GUI
+        double cx = this.center.getX() + this.radius;
+        double cy = this.center.getY() + this.radius;
+        double radius = this.radius;
+        // rectangle edges
+        double rectLeft   = r.getX();
+        double rectRight  = r.getX() + r.getWidth();
+        double rectTop    = r.getY();
+        double rectBottom = r.getY() + r.getHeight();
+        // closest point to circle
+        double testX = cx;
+        if (cx < rectLeft) {
+            testX = rectLeft; // left side
+        } else if (cx > rectRight) {
+            testX = rectRight; // right side
+        }
+        double testY = cy;
+        if (cy < rectTop) {
+            testY = rectTop; // top side
+        } else if (cy > rectBottom) {
+            testY = rectBottom; // bottom side
+        }
+
+        // distance from circle center to closest point
+        double distX = cx - testX;
+        double distY = cy - testY;
+        double distance = Math.sqrt(distX * distX + distY * distY);
+        //check for intersection
+        if (distance < radius) {
+            boolean collided = false;
+            if (Math.abs(distX) > 0.00001) {
+                this.setXminus();
+                collided = true;
+            }
+            if (Math.abs(distY) > 0.00001) {
+                this.setYminus();
+                collided = true;
+            }
+            return collided;
+        }
+        return false;
+    }
 
     /*
     //////////////////////////////////////////////
@@ -120,6 +170,14 @@ public class Ball {
     }
 
     /**
+     * getCenter.
+     * @return the center point of the ball
+     */
+    public Point getCenter() {
+        return this.center;
+    }
+
+    /**
      * getColor.
      * @return Color
      */
@@ -141,6 +199,32 @@ public class Ball {
      */
     public void drawOn(DrawSurface surface) {
         surface.setColor(color);
-        surface.fillOval(getX(), getY(), getSize(), getSize());
+        surface.fillOval(getX(), getY(), getSize() * 2, getSize() * 2);
+    }
+    /*
+    //////////////////////////////////////////////
+                        SETS
+    //////////////////////////////////////////////
+     */
+
+    /**
+     * set a new radius (cases in which the radius does not fit the screen).
+     * @param radius - new radius
+     */
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    /**
+     * changes the direction of the ball in case of collision.
+     */
+    public void setXminus() {
+        this.v.setDx(-this.v.getDx());
+    }
+    /**
+     * changes the direction of the ball in case of collision.
+     */
+    public void setYminus() {
+        this.v.setDy(-this.v.getDy());
     }
 }

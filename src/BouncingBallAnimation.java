@@ -11,7 +11,7 @@ import java.util.Random;
 import java.awt.Color;
 
 /**
- * Class BouncingBallAnimation for drawings a ball and animating it.
+ * task 2 - Class BouncingBallAnimation for drawings a ball and animating it.
  */
 public class BouncingBallAnimation {
     //constants for easier changes
@@ -29,7 +29,7 @@ public class BouncingBallAnimation {
         Ball ball = new Ball(start.getX(), start.getY(), size, color);
         //Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
         ball.setVelocity(dx, dy);
-        ball.setScreen(WIDTHOFCANVAS, 0, HEIGHTOFCANVAS, 0);
+        ball.setScreen(0, WIDTHOFCANVAS, 0, HEIGHTOFCANVAS);
         while (true) {
             ball.moveOneStep();
             DrawSurface d = gui.getDrawSurface();
@@ -46,18 +46,7 @@ public class BouncingBallAnimation {
      * @param args arguments from the command line
      */
     public static void main(String[] args) {
-        if (args.length == 4) {
-//            Random r = new Random();
-//            int radius = Integer.parseInt(args[0]);
-//            double x = r.nextDouble() * (WIDTHOFCANVAS - 2 * radius) + radius;
-//            double y = r.nextDouble() * (HEIGHTOFCANVAS - 2 * radius) + radius;
-//            int angle = r.nextInt(360);
-//            double speed;
-//            if (radius >= 50) {
-//                speed = 1;
-//            } else {
-//                speed = radius * 0.5;
-//            }
+        if (args.length >= 4) {
             double x = Double.parseDouble(args[0]);
             double y = Double.parseDouble(args[1]);
             int dx = Integer.parseInt(args[2]);
