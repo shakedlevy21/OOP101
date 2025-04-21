@@ -9,10 +9,6 @@ public class Rectangle {
     private final double y;
     private double width = 0;
     private double height = 0;
-    private final Line uphorizontaline;
-    private final Line downhorizontaline;
-    private final Line leftverticaline;
-    private final Line rightverticaline;
     private Color color = Color.white;
 
 
@@ -29,15 +25,20 @@ public class Rectangle {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.uphorizontaline = new Line(x, y, x + width, y);                 // top
-        this.downhorizontaline = new Line(x, y + height, x + width, y + height); // bottom
-        this.leftverticaline = new Line(x, y, x, y + height);
-        this.rightverticaline = new Line(x + width, y, x + width, y + height);
         this.color = color;
+    }
+
+    /**
+     * draws a filled rectangle on surface.
+     * @param surface - GUI surface to draw on
+     */
+    public void drawOn(DrawSurface surface) {
+        surface.setColor(this.color);
+        surface.fillRectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
     }
     /*
     //////////////////////////////////////////////
-                        SETS
+                        GETS
     //////////////////////////////////////////////
      */
 
@@ -75,14 +76,5 @@ public class Rectangle {
      */
     public Color getColor() {
         return this.color;
-    }
-
-    /**
-     * draws a filled rectangle on surface.
-     * @param surface - GUI surface to draw on
-     */
-    public void drawOn(DrawSurface surface) {
-        surface.setColor(this.color);
-        surface.fillRectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
     }
 }

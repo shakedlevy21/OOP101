@@ -15,7 +15,6 @@ import java.awt.Color;
  */
 public class BouncingBallAnimation {
     //constants for easier changes
-    private static final int NUMOFLINES = 10;
     private static final int WIDTHOFCANVAS = 400;
     private static final int HEIGHTOFCANVAS = 400;
 
@@ -48,9 +47,21 @@ public class BouncingBallAnimation {
     public static void main(String[] args) {
         if (args.length >= 4) {
             double x = Double.parseDouble(args[0]);
+            if (x < 0 || x > WIDTHOFCANVAS) {
+                x = WIDTHOFCANVAS / 2.0;
+            }
             double y = Double.parseDouble(args[1]);
+            if (y < 0 || y > HEIGHTOFCANVAS) {
+                y = HEIGHTOFCANVAS / 2.0;
+            }
             int dx = Integer.parseInt(args[2]);
+            if (dx < -50 || dx > 50) {
+                dx = 5;
+            }
             int dy = Integer.parseInt(args[3]);
+            if (dy < -50 || dy > 50) {
+                dy = 5;
+            }
             Point p = new Point(x, y);
             drawAnimation(p, dx, dy);
         } else {

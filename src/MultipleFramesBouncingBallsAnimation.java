@@ -34,30 +34,34 @@ public class MultipleFramesBouncingBallsAnimation {
 
         Rectangle yellowrect = new Rectangle(YELLOWSTART, YELLOWSTART,
                 150, 150, Color.YELLOW);
+        Rectangle grayrect = new Rectangle(GRAYSTART, GRAYSTART, 450, 450, Color.GRAY);
+        //input balls to an array and assign all the variables
         for (int i = 0; i < args.length; i++) {
-            int radius = Integer.parseInt(args[i]);
+            int radius = Integer.parseInt(args[i]) + 7;
             if (radius < 0) {
                 radius = 20;
-            } else if (radius >= Math.min(WIDTHOFCANVAS, HEIGHTOFCANVAS)
-                    || radius >= Math.abs(GRAYEND - GRAYSTART)) {
-                radius = radius / 10;
+            }
+            if (radius >= Math.min(WIDTHOFCANVAS, HEIGHTOFCANVAS) / 2
+                    || radius >= Math.abs((GRAYEND - GRAYSTART) / 2)) {
+                radius = 60;
             }
             double x;
             double y;
             if (i <= args.length / 2 - 1) { //first half is inside the gray
-                double minX = GRAYSTART + radius;      // at least radius from the left
-                double maxX = GRAYEND - 3 * radius;    // 3 radii away from the right edge
+                double minX = GRAYSTART + radius;
+                double maxX = GRAYEND - 3 * radius - 20;
                 x = r.nextDouble() * (maxX - minX) + minX;
 
-                double minY = GRAYSTART + radius;      // at least radius from the top
-                double maxY = GRAYEND - 3 * radius;    // 3 radii away from the bottom edge
+                double minY = GRAYSTART + radius;
+                double maxY = GRAYEND - 3.5 * radius - 20;
                 y = r.nextDouble() * (maxY - minY) + minY;
             } else { //second half outside of the gray frame
-                x = (r.nextDouble() * (WIDTHOFCANVAS - 2 * radius)) + radius;
-                y = (r.nextDouble() * (HEIGHTOFCANVAS - 2 * radius)) + radius;
+                x = (r.nextDouble() * (WIDTHOFCANVAS - 2 * radius - GRAYEND)) + GRAYEND;
+                y = (r.nextDouble() * (HEIGHTOFCANVAS - 2 * radius - 150));
             }
             //check if is inside of yellow rectangle
-            if (x > YELLOWSTART && x + radius < YELLOWEND && y > YELLOWSTART && y + radius < YELLOWEND) {
+            if (x > YELLOWSTART - 2 && x + radius < YELLOWEND + 2
+                    && y > YELLOWSTART - 2 && y + radius < YELLOWEND + 2) {
                 x = WIDTHOFCANVAS / 2.0;
                 y = HEIGHTOFCANVAS / 2.0;
             }
@@ -80,9 +84,12 @@ public class MultipleFramesBouncingBallsAnimation {
         while (true) {
             DrawSurface d = gui.getDrawSurface();
 
-            d.setColor(Color.GRAY);
-            d.fillRectangle(GRAYSTART, GRAYSTART, 450, 450);
+            grayrect.drawOn(d);
 
+            // check outside balls intersection
+            for (int i = args.length / 2; i < args.length; i++) {
+                balls[i].collideRectangle(grayrect);
+            }
 
             for (Ball ball : balls) {
                 ball.collideRectangle(yellowrect);

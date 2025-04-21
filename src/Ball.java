@@ -93,50 +93,50 @@ public class Ball {
     /**
      * collideRectangle - checks if this ball is colliding with a rectangle and changes its direction accordingly.
      * @param r - the rectangle to check with
-     * @return - boolean if they collided or not
+     * @return - boolean if they collided or not (for future use maybe)
      */
     public boolean collideRectangle(Rectangle r) {
         // circle center correction because of the drawing of GUI
-        double cx = this.center.getX() + this.radius;
-        double cy = this.center.getY() + this.radius;
+        double circlex = this.center.getX() + this.radius;
+        double circley = this.center.getY() + this.radius;
         double radius = this.radius;
-        // rectangle edges
-        double rectLeft   = r.getX();
-        double rectRight  = r.getX() + r.getWidth();
-        double rectTop    = r.getY();
-        double rectBottom = r.getY() + r.getHeight();
-        // closest point to circle
-        double testX = cx;
-        if (cx < rectLeft) {
-            testX = rectLeft; // left side
-        } else if (cx > rectRight) {
-            testX = rectRight; // right side
+        // rectangle edge detect
+        double rectleft   = r.getX();
+        double rectright  = r.getX() + r.getWidth();
+        double recttop    = r.getY();
+        double rectbottom = r.getY() + r.getHeight();
+        // closest edge on rectangle to circle
+        double xtest = circlex;
+        if (circlex < rectleft) { // left side
+            xtest = rectleft;
+        } else if (circlex > rectright) { // right side
+            xtest = rectright;
         }
-        double testY = cy;
-        if (cy < rectTop) {
-            testY = rectTop; // top side
-        } else if (cy > rectBottom) {
-            testY = rectBottom; // bottom side
+        double ytest = circley;
+        if (circley < recttop) { // top side
+            ytest = recttop;
+        } else if (circley > rectbottom) { // bottom side
+            ytest = rectbottom;
         }
 
         // distance from circle center to closest point
-        double distX = cx - testX;
-        double distY = cy - testY;
-        double distance = Math.sqrt(distX * distX + distY * distY);
+        double distx = circlex - xtest;
+        double disty = circley - ytest;
+        double distance = Math.sqrt(distx * distx + disty * disty);
+        boolean iscollided = false;
         //check for intersection
-        if (distance < radius) {
-            boolean collided = false;
-            if (Math.abs(distX) > 0.00001) {
+        if (distance < radius) { //than collide and check which axis to change
+            if (Math.abs(distx) > 0.00001) {
                 this.setXminus();
-                collided = true;
+                iscollided = true;
             }
-            if (Math.abs(distY) > 0.00001) {
+            if (Math.abs(disty) > 0.00001) {
                 this.setYminus();
-                collided = true;
+                iscollided = true;
             }
-            return collided;
+            return iscollided;
         }
-        return false;
+        return iscollided;
     }
 
     /*

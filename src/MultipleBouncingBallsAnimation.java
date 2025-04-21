@@ -27,10 +27,13 @@ public class MultipleBouncingBallsAnimation {
         Random r = new Random();
         for (int i = 0; i < args.length; i++) {
             int radius = Integer.parseInt(args[i]);
+            if (radius < 0 || radius > WIDTHOFCANVAS) {
+                radius = 10;
+            }
             double x;
             double y;
-            x = r.nextDouble() * (WIDTHOFCANVAS - 2 * radius);
-            y = r.nextDouble() * (HEIGHTOFCANVAS - 2 * radius);
+            x = r.nextDouble() * (WIDTHOFCANVAS - 2 * radius - 10) + 10;
+            y = r.nextDouble() * (HEIGHTOFCANVAS - 2 * radius - 10) + 10;
 
             int angle = r.nextInt(360);
             double speed = Math.max(1, 50 / radius);
