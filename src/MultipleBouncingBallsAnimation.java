@@ -41,7 +41,6 @@ public class MultipleBouncingBallsAnimation {
             Ball b = new Ball(x, y, radius, color);
             Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
             b.setVelocity(v);
-            b.setScreen(0, WIDTHOFCANVAS, 0, HEIGHTOFCANVAS);
             balls[i] = b;
         }
 
@@ -49,7 +48,7 @@ public class MultipleBouncingBallsAnimation {
             DrawSurface d = gui.getDrawSurface();  // Get it ONCE per frame
 
             for (Ball ball : balls) {
-                ball.moveOneStep();
+                //ball.moveOneStep();
                 ball.drawOn(d);
             }
 

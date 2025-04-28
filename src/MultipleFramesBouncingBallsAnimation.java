@@ -33,8 +33,8 @@ public class MultipleFramesBouncingBallsAnimation {
         Random r = new Random();
 
         Rectangle yellowrect = new Rectangle(YELLOWSTART, YELLOWSTART,
-                150, 150, Color.YELLOW);
-        Rectangle grayrect = new Rectangle(GRAYSTART, GRAYSTART, 450, 450, Color.GRAY);
+                150, 150);
+        Rectangle grayrect = new Rectangle(GRAYSTART, GRAYSTART, 450, 450);
         //input balls to an array and assign all the variables
         for (int i = 0; i < args.length; i++) {
             int radius = Integer.parseInt(args[i]) + 7;
@@ -73,9 +73,9 @@ public class MultipleFramesBouncingBallsAnimation {
             Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
             b.setVelocity(v);
             if (i <= args.length / 2 - 1) {
-                b.setScreen(GRAYSTART, GRAYEND, GRAYSTART, GRAYEND);
+                //b.setScreen(GRAYSTART, GRAYEND, GRAYSTART, GRAYEND);
             } else {
-                b.setScreen(0, WIDTHOFCANVAS, 0, HEIGHTOFCANVAS);
+                //b.setScreen(0, WIDTHOFCANVAS, 0, HEIGHTOFCANVAS);
             }
             balls[i] = b;
         }
@@ -93,7 +93,7 @@ public class MultipleFramesBouncingBallsAnimation {
 
             for (Ball ball : balls) {
                 ball.collideRectangle(yellowrect);
-                ball.moveOneStep();
+                //ball.moveOneStep();
                 ball.drawOn(d);
             }
 

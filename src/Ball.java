@@ -4,15 +4,12 @@ import java.awt.Color;
 /**
  * Ball - class for balls.
  */
-public class Ball {
+public class Ball implements Sprite {
     private Point center;
     private int radius;
     private Color color;
     private Velocity v;
-    private int screenmaxwidth;
-    private int screenminwidth;
-    private int screenmaxheight;
-    private int screenminheight;
+    private GameEnvironment collidables;
 
 
     /**
@@ -43,20 +40,6 @@ public class Ball {
     }
 
     /**
-     * sets the screen in which the ball moves in.
-     * @param maxwidth max width
-     * @param minwidth min width
-     * @param maxheight max height
-     * @param minheight min height
-     */
-    public void setScreen(int minwidth, int maxwidth, int minheight, int maxheight) {
-        this.screenmaxwidth = maxwidth;
-        this.screenmaxheight = maxheight;
-        this.screenminheight = minheight;
-        this.screenminwidth = minwidth;
-    }
-
-    /**
      * Sets the velocity of the ball.
      * @param v - for the velocity to add
      */
@@ -77,20 +60,31 @@ public class Ball {
      * moveOneStep: checks edges and changes the center of the ball to the next frame.
      */
     public void moveOneStep() {
-        //check edges
-        //right and left
-        if ((this.center.getX() + radius * 2) >= this.screenmaxwidth || this.center.getX() < screenminwidth) {
-            this.v.setDx(-this.v.getDx());
+        Line trajectory = new Line(center, new Point(center.getX() + v.getDx(), center.getY() + v.getDy()));
+        CollisionInfo info = collidables.getClosestCollision(trajectory);
+        if (info != null) {
+            double dist = Math.sqrt(Math.pow(v.getDx(), 2) + Math.pow(v.getDy(), 2));
+            if (Math.abs(info.collisionPoint().distance(center) - radius) < radius + dist) {
+                //make a close velocity for the point to get closer to the collidable
+                Velocity vel = new Velocity(Math.min(info.collisionPoint().distance(center), radius),
+                        Math.min(info.collisionPoint().distance(center), radius));
+                this.v.applyToPoint(this.center, vel);
+                Collidable collidable = info.collisionObject();
+                if (collidable != null) {
+
+                    Velocity newvel = collidable.hit(info.collisionPoint(), this.v);
+                    if (newvel != null) {
+                        this.v = newvel;
+                    }
+                }
+            }
+        } else {
+            this.center = this.getVelocity().applyToPoint(this.center);
         }
-        //up and down
-        if ((this.center.getY() + radius * 2) >= this.screenmaxheight || this.center.getY() < screenminheight) {
-            this.v.setDy(-this.v.getDy());
-        }
-        //apply to point
-        this.center = this.getVelocity().applyToPoint(this.center);
     }
 
     /**
+     * not in use anymore.
      * collideRectangle - checks if this ball is colliding with a rectangle and changes its direction accordingly.
      * @param r - the rectangle to check with
      * @return - boolean if they collided or not (for future use maybe)
@@ -197,9 +191,24 @@ public class Ball {
      * draw the ball on the given DrawSurface.
      * @param surface to draw on
      */
+    @Override
     public void drawOn(DrawSurface surface) {
         surface.setColor(color);
-        surface.fillOval(getX(), getY(), getSize() * 2, getSize() * 2);
+        surface.fillOval(getX() - radius, getY() - radius, getSize() * 2, getSize() * 2);
+        surface.setColor(Color.BLACK);
+        surface.drawOval(getX() - radius, getY() - radius, getSize() * 2, getSize() * 2);
+    }
+
+    @Override
+    public void timePassed() {
+        moveOneStep();
+    }
+    /**
+     * Adds the block to the provided game.
+     * @param g - game to add to.
+     */
+    public void addToGame(Game g) {
+        g.addSprite(this);
     }
     /*
     //////////////////////////////////////////////
@@ -226,5 +235,13 @@ public class Ball {
      */
     public void setYminus() {
         this.v.setDy(-this.v.getDy());
+    }
+
+    /**
+     * set the environment for the ball to know all the collidables it should be aware of.
+     * @param collidables
+     */
+    public void setEnvironment(GameEnvironment collidables) {
+        this.collidables = collidables;
     }
 }
