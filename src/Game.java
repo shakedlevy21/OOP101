@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.util.Random;
+
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
@@ -54,14 +56,15 @@ public class Game {
             }
         }
         // balls
-        Ball ball = new Ball(100, 100, 5, Color.white);
-        ball.setVelocity(5, 5);
-        ball.addToGame(this);
-        ball.setEnvironment(environment);
-        Ball ball2 = new Ball(100, 200, 5, Color.white);
-        ball2.setVelocity(9, 4);
-        ball2.addToGame(this);
-        ball2.setEnvironment(environment);
+        Random rand = new Random();
+        for (int i = 0; i < 2; i++) {
+            double direction = rand.nextDouble(10) + 1;
+            double direction2 = rand.nextDouble(10) + 1;
+            Ball ball = new Ball(100, 100, 7, Color.white);
+            ball.setVelocity(direction, direction2);
+            ball.addToGame(this);
+            ball.setEnvironment(environment);
+        }
         // paddle
         biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
         Paddle paddle = new Paddle((width / 2) - (walldepth / 2), height - walldepth - 20,

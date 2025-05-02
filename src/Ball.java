@@ -60,15 +60,22 @@ public class Ball implements Sprite {
      * moveOneStep: checks edges and changes the center of the ball to the next frame.
      */
     public void moveOneStep() {
-        Line trajectory = new Line(center, new Point(center.getX() + v.getDx(), center.getY() + v.getDy()));
+        // point from the edge of the circle to the next point. (according to the direction and velocity)
+        double prevx = center.getX() + (v.getDx() > 0 ? radius : -radius);
+        double prevy = center.getY() + (v.getDy() > 0 ? radius : -radius);
+        double nextx = center.getX() + v.getDx() + (v.getDx() > 0 ? radius : -radius);
+        double nexty = center.getY() + v.getDy() + (v.getDy() > 0 ? radius : -radius);
+        Point prev = new Point(prevx, prevy);
+        Point next = new Point(nextx, nexty);
+        Line trajectory = new Line(prev, next);
         CollisionInfo info = collidables.getClosestCollision(trajectory);
         if (info != null) {
-            double dist = Math.sqrt(Math.pow(v.getDx(), 2) + Math.pow(v.getDy(), 2));
-            if (Math.abs(info.collisionPoint().distance(center) - radius) < radius + dist) {
+            double dist = Math.sqrt(Math.pow(this.radius - v.getDx(), 2) + Math.pow(this.radius - v.getDy(), 2));
+            if (Math.abs(info.collisionPoint().distance(next)) < (2 * radius) + dist) {
                 //make a close velocity for the point to get closer to the collidable
-                Velocity vel = new Velocity(Math.min(info.collisionPoint().distance(center), radius),
-                        Math.min(info.collisionPoint().distance(center), radius));
-                this.v.applyToPoint(this.center, vel);
+//                Velocity vel = new Velocity(Math.min(info.collisionPoint().distance(center), radius),
+//                        Math.min(info.collisionPoint().distance(center), radius));
+//                this.v.applyToPoint(this.center, vel);
                 Collidable collidable = info.collisionObject();
                 if (collidable != null) {
 
