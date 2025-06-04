@@ -1,3 +1,6 @@
+package game.animation;
+import game.gui.shapes.Point;
+import game.gui.shapes.Line;
 /**
  * This class does some simple testing of the Point and Line classes.
  */

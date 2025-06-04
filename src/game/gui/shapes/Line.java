@@ -1,3 +1,4 @@
+package game.gui.shapes;
 import biuoop.DrawSurface;
 
 /**
@@ -166,6 +167,54 @@ public class Line {
         double py = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / divider;
         //return the point
         return new Point(px, py);
+    }
+
+    /**
+     * Return the distance of a given point from this line.
+     * @param p point to check the distance from
+     * @return distance from line, even if the line is a point
+     */
+    public double distancefromLine(Point p) {
+        Point p1 = this.start;
+        Point p2 = this.end;
+
+        double lineLength = p1.distance(p2);
+
+        if (lineLength == 0) {
+            // if the line is a single point, return distance to that point
+            return p.distance(p1);
+        }
+
+        // using the formula for distance from a point to a line
+        double numerator = Math.abs((p2.getY() - p1.getY()) * p.getX()
+                - (p2.getX() - p1.getX()) * p.getY()
+                + p2.getX() * p1.getY()
+                - p2.getY() * p1.getX());
+        return numerator / lineLength;
+    }
+
+    /**
+     * If this line does not intersect with the rectangle, return null.
+     * Otherwise, return the closest intersection point to the start of the line.
+     * @param rect to check with
+     * @return null if no intersection and point of intersection if it does
+     */
+    public Point closestIntersectionToStartOfLine(Rectangle rect) {
+        java.util.List<Point> intersectionpoints = rect.intersectionPoints(this);
+        if (intersectionpoints.isEmpty()) {
+            return null;
+        }
+        double distance = Double.MAX_VALUE;
+        Point pointtoreturn = null;
+        for (Point intersectionPoint : intersectionpoints) {
+            if (intersectionPoint != null) {
+                if (this.start.distance(intersectionPoint) < distance) {
+                    distance = this.start.distance(intersectionPoint);
+                    pointtoreturn = intersectionPoint;
+                }
+            }
+        }
+        return pointtoreturn;
     }
 
     /**

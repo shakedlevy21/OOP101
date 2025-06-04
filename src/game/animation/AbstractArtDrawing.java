@@ -1,13 +1,14 @@
-/******************
- Name: Shaked Levy
- ID: 212730311
- Assignment: ass1
- *******************/
+package game.animation;
+
 import biuoop.GUI;
 import biuoop.DrawSurface;
 
 import java.util.Random;
 import java.awt.Color;
+import game.gui.shapes.Line;
+import game.gui.shapes.Point;
+
+
 
 /**
  * AbstractArtDrawing - class for canvas drawing.

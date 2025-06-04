@@ -1,14 +1,13 @@
-/******************
- Name: Shaked Levy
- ID: 212730311
- Assignment: ass1
- *******************/
+package game.animation;
+
 import biuoop.GUI;
 import biuoop.DrawSurface;
 import biuoop.Sleeper;
 
 import java.util.Random;
 import java.awt.Color;
+import game.gui.shapes.Ball;
+import game.gui.shapes.Point;
 
 /**
  * task 2 - Class BouncingBallAnimation for drawings a ball and animating it.
@@ -28,7 +27,7 @@ public class BouncingBallAnimation {
         Ball ball = new Ball(start.getX(), start.getY(), size, color);
         //Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
         ball.setVelocity(dx, dy);
-        ball.setScreen(0, WIDTHOFCANVAS, 0, HEIGHTOFCANVAS);
+        //ball.setScreen(0, WIDTHOFCANVAS, 0, HEIGHTOFCANVAS);
         while (true) {
             ball.moveOneStep();
             DrawSurface d = gui.getDrawSurface();

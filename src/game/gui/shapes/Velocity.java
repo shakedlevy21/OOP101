@@ -1,3 +1,4 @@
+package game.gui.shapes;
 /**
  * Velocity specifies the change in position on the `x` and the `y` axes.
  */
@@ -35,6 +36,16 @@ public class Velocity {
      */
     public Point applyToPoint(Point p) {
         return new Point(this.dx + p.getX(), this.dy + p.getY());
+    }
+
+    /**
+     * apply to point a new temporary velocity.
+     * @param p current point.
+     * @param v temporary velocity to apple now.
+     * @return a new point with the new coordinates.
+     */
+    public Point applyToPoint(Point p, Velocity v) {
+        return new Point(this.dx + v.dx, this.dy + v.dy);
     }
     /*
     //////////////////////////////////////////////
@@ -77,5 +88,22 @@ public class Velocity {
      */
     public double getDy() {
         return this.dy;
+    }
+
+    /**
+     * Get the angle of the velocity.
+     * @return the angle in degrees!! for the current velocity (tan(y/x)).
+     */
+    public double getAngle() {
+        double radians = Math.atan2(dy, dx);
+        return Math.toDegrees(radians);
+    }
+
+    /**
+     * Get the speed of the velocity (pythagoras theorem).
+     * @return the speed in distance.
+     */
+    public double getSpeed() {
+        return Math.sqrt(this.dx * this.dx + this.dy * this.dy);
     }
 }
